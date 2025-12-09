@@ -173,6 +173,7 @@ findings, heatmaps, and recommendations is available in:
 
 Built by **Kushagra Bansal**  
 Email: **writekushagra12@gmail.com**
+
 Role: Quantitative Architect & Product Strategy enthusiast  
 Open to feedback, contributions, and collaboration.
 
