@@ -1,4 +1,4 @@
-# 🍽️ Zomato Unit Economics Simulator (FY24 Model)
+# Zomato Unit Economics Simulator (FY24 Model)
 
 A Monte Carlo–based **profitability and risk simulator** built using **Zomato FY24 food delivery data**.  
 It models uncertainty in AOV, rider cost, CAC, refunds, and operations to estimate **profit per order**,  
@@ -9,7 +9,7 @@ have the strongest impact on profit and risk.
 
 ---
 
-## 🚀 Project Overview
+## Project Overview
 
 Food delivery unit economics are highly sensitive.  
 A small change in AOV, rider payout, CAC, or refund rate can flip profitability.
@@ -22,7 +22,7 @@ This simulator answers three questions:
 
 ---
 
-## 🔧 Monte Carlo Engine (10,000 Order Simulation)
+## Monte Carlo Engine (10,000 Order Simulation)
 
 Instead of treating AOV or rider cost as fixed, the simulator models each order as a **random event**:
 
@@ -51,7 +51,7 @@ The histogram shows a strong right-skewed distribution with rare but heavy losse
 
 ---
 
-## 📊 Scenario Engine (5 Strategic Levers)
+## Scenario Engine (5 Strategic Levers)
 
 Five real-world strategy levers are tested by re-running the Monte Carlo engine  
 and adjusting order volume impact:
@@ -88,7 +88,7 @@ and adjusting order volume impact:
 
 ---
 
-## 🔥 Key Insights
+## Key Insights
 
 - **Commission increase is the strongest profit lever**  
 - **Refund reduction is the strongest risk-reduction lever**  
@@ -101,7 +101,7 @@ and adjusting order volume impact:
 
 ---
 
-## 🌡️ Sensitivity Heatmaps (2D Analysis)
+## Sensitivity Heatmaps (2D Analysis)
 
 Built using multiple Monte Carlo runs across parameter grids.
 
@@ -117,7 +117,7 @@ These help identify stable, high-profit operating zones.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 zomato-unit-economics-simulator/
@@ -142,7 +142,7 @@ zomato-unit-economics-simulator/
 
 ---
 
-## 🛠 Installation & Usage
+## Installation & Usage
 
 ### 1. Install dependencies
 ```
@@ -158,7 +158,7 @@ Charts and results are generated automatically.
 
 ---
 
-## 📄 Presentation
+## Presentation
 
 A full consulting-style PPT explaining assumptions, logic,  
 findings, heatmaps, and recommendations is available in:
@@ -169,7 +169,7 @@ findings, heatmaps, and recommendations is available in:
 
 ---
 
-## 👤 Author
+## Author
 
 Built by **Kushagra Bansal**  
 Email: **writekushagra12@gmail.com**
@@ -179,7 +179,7 @@ Open to feedback, contributions, and collaboration.
 
 ---
 
-## ⭐ Why This Project Matters
+## Why This Project Matters
 
 This simulator demonstrates:
 - Real-world understanding of quick-commerce economics  
