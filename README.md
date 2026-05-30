@@ -1,125 +1,186 @@
+
 # Zomato Unit Economics Simulator (FY24 Model)
 
-A Monte Carlo–based **profitability and risk simulator** built using **Zomato FY24 food delivery data**.  
-It models uncertainty in AOV, rider cost, CAC, refunds, and operations to estimate **profit per order**,  
-**loss-risk**, and **monthly profit** at Zomato’s ~66M monthly order scale.
-
-The project then evaluates **5 strategic levers** and builds **2 sensitivity heatmaps** to show which decisions  
-have the strongest impact on profit and risk.
+Monte Carlo–based profitability and risk simulator built on 
+Zomato FY24 food delivery data. Models uncertainty across 
+pricing, operations, and cost variables to identify the 
+highest-ROI strategic levers at Zomato's ~66M monthly order scale.
 
 ---
 
+<<<<<<< HEAD
 ## Project Overview
+=======
+## Key Findings
+>>>>>>> ffd03ed (Revamp README: lead with findings, add heatmaps, scenario table, recommendations)
 
-Food delivery unit economics are highly sensitive.  
-A small change in AOV, rider payout, CAC, or refund rate can flip profitability.
+> **Commission rate is Zomato's highest-ROI profit lever** —
+> a 2.5% increase delivers +₹58 Cr monthly profit,
+> outperforming a ₹5 delivery fee increase by 5x.
+
+| Finding | Insight |
+|---|---|
+| Strongest profit lever | Commission rate increase (22.5% → 25%) |
+| Strongest risk-reduction lever | Refund probability reduction (2% → 1%) |
+| Largest absolute profit upside | CAC efficiency (₹20 → ₹10 = +₹53 Cr/month) |
+| Dominant tail-risk driver | Refund probability — not rider cost or AOV |
+| Baseline profitability | ₹48.26 avg profit/order, 2.2% loss risk |
+| Optimal strategy | Refund reduction + CAC efficiency first; pricing levers selectively |
+
+---
+
+## Full Analysis
+
+Consulting-style presentation with methodology, assumptions,
+findings, heatmaps, and strategic recommendations:
+
+📄 [View Full Report (PDF)](reports/Zomato_Unit_Economics_&_Risk_Simulator_(FY24).pdf)
+
+---
+
+## What This Simulator Does
+
+Food delivery unit economics are highly sensitive.
+A small change in AOV, rider payout, CAC, or refund rate
+can flip per-order profitability at scale.
 
 This simulator answers three questions:
 
-1. **What does Zomato actually earn per order after randomness?**  
-2. **Which levers (delivery fee, commission, CAC, refunds, rider variance) move profit the most?**  
-3. **Where does the business become risky or unstable?**
+1. **What does Zomato actually earn per order under real-world uncertainty?**
+2. **Which levers move profit and risk the most?**
+3. **Where does the business become unstable?**
 
 ---
 
 ## Monte Carlo Engine (10,000 Order Simulation)
 
-Instead of treating AOV or rider cost as fixed, the simulator models each order as a **random event**:
+Each order is modeled as a random event drawn from
+calibrated FY24 distributions — not fixed averages.
 
-- AOV ~ Normal(428, 50)  
-- Rider Cost ~ Normal(32, 10)  
-- Packaging Cost ~ Normal(12, 3)  
-- CAC/Marketing Cost ~ Normal(20, 10)  
-- Refund Flag ~ Bernoulli(p = 0.02)  
-- Payment gateway fee = 2.4% of AOV  
+| Variable | Distribution | Parameters |
+|---|---|---|
+| AOV | Normal | μ=428, σ=50 |
+| Rider Cost | Normal | μ=32, σ=10 |
+| Packaging Cost | Normal | μ=12, σ=3 |
+| CAC / Marketing | Normal | μ=20, σ=10 |
+| Refund Flag | Bernoulli | p=0.02 |
+| Payment Gateway Fee | Fixed % | 2.4% of AOV |
 
-### **Net Profit per Order Formula**
-```
-Revenue = AOV × Commission + Delivery Fee
+### Net Profit Formula
+
+```text
+Revenue = (AOV × Commission Rate) + Delivery Fee
 Costs   = Rider + Packaging + CAC + Gateway Fee + Refund Loss
 Profit  = Revenue – Costs
-```
+````
 
-### **Baseline Outputs**
-- **Avg Profit/order:** ₹48.26  
-- **Loss-Risk:** 2.20% (probability profit < 0)  
-- **Monthly Orders:** ~66M (from FY24 GOV/AOV)  
-- **Monthly Profit:** ₹318.52 Cr  
+### Baseline Results (FY24)
 
-The histogram shows a strong right-skewed distribution with rare but heavy losses  
-(from refund events).
+* **Avg Profit/Order:** ₹48.26
+* **Loss Risk:** 2.20% (probability profit < 0)
+* **Monthly Orders:** ~66M
+* **Monthly Profit:** ₹318.5 Cr
+
+![Baseline Profit Distribution](assets/histogram_baseline.png)
 
 ---
 
+<<<<<<< HEAD
 ## Scenario Engine (5 Strategic Levers)
+=======
+## Scenario Comparison (5 Strategic Levers)
+>>>>>>> ffd03ed (Revamp README: lead with findings, add heatmaps, scenario table, recommendations)
 
-Five real-world strategy levers are tested by re-running the Monte Carlo engine  
-and adjusting order volume impact:
+| Scenario                 | Avg Profit/Order | Loss Risk | Monthly Profit | Key Trade-off         |
+| ------------------------ | ---------------- | --------- | -------------- | --------------------- |
+| Baseline FY24            | ₹48.26           | 2.20%     | ₹318.5 Cr      | —                     |
+| +₹5 Delivery Fee         | ₹51.31           | 1.82%     | ₹328.5 Cr      | Slight customer churn |
+| Refund ↓ (2%→1%)         | ₹52.70           | 1.02%     | ₹337.4 Cr      | Lower new-user trust  |
+| Rider Variance ↓         | ₹47.49           | 2.24%     | ₹310.3 Cr      | Minimal upside        |
+| CAC ↓ (₹20→₹10)          | ₹59.27           | 1.82%     | ₹371.6 Cr      | Slower user growth    |
+| Commission ↑ (22.5%→25%) | ₹58.24           | 2.20%     | ₹376.7 Cr      | Restaurant churn risk |
 
-### **A. Increase Delivery Fee (+₹5)**
-- Slight user churn  
-- Slightly higher CAC  
-- Profit/order: ₹51.31  
-- Monthly Profit: ₹328.52 Cr  
-
-### **B. Reduce Refund Probability (2% → 1%)**
-- Stricter refund policy / operational improvements  
-- Lower new-user confidence  
-- Profit/order: ₹52.70  
-- Monthly Profit: ₹337.36 Cr  
-
-### **C. Reduce Rider Cost Variance (SD 10 → 6)**
-- More predictable routing  
-- Slight operational friction  
-- Profit/order: ₹47.49  
-- Monthly Profit: ₹310.31 Cr  
-
-### **D. Reduce CAC (₹20 → ₹10)**
-- Less aggressive marketing  
-- Slower user growth  
-- Profit/order: ₹59.27  
-- Monthly Profit: ₹371.59 Cr  
-
-### **E. Increase Commission (22.5% → 25%)**
-- Higher take rate  
-- Mild restaurant churn risk  
-- Profit/order: ₹58.24  
-- Monthly Profit: ₹376.68 Cr  (Highest among scenarios)
+*All scenarios simulated using 10,000 Monte Carlo runs
+scaled to FY24 monthly volumes.*
 
 ---
 
+<<<<<<< HEAD
 ## Key Insights
+=======
+## Sensitivity Analysis
+>>>>>>> ffd03ed (Revamp README: lead with findings, add heatmaps, scenario table, recommendations)
 
-- **Commission increase is the strongest profit lever**  
-- **Refund reduction is the strongest risk-reduction lever**  
-- Delivery fee increase has moderate upside  
-- Rider cost variance reduction has minimal impact  
-- CAC efficiency has a huge impact but hurts growth  
-- Profit zones concentrate at:  
-  - **25–26% Commission**  
-  - **₹44–₹50 Delivery Fee**
+### Monthly Profit: Commission Rate × Delivery Fee
+
+![Profit Heatmap](assets/heatmap_profit.png)
+
+Profit rises sharply with commission and moderately with
+delivery fee. Commission has a compounding effect at scale —
+delivery fee has a linear effect.
+
+**Profit zones concentrate at: 25–26% commission, ₹44–₹50 delivery fee.**
 
 ---
 
+<<<<<<< HEAD
 ## Sensitivity Heatmaps (2D Analysis)
+=======
+### Loss Risk: Commission Rate × Refund Probability
+>>>>>>> ffd03ed (Revamp README: lead with findings, add heatmaps, scenario table, recommendations)
 
-Built using multiple Monte Carlo runs across parameter grids.
+![Risk Heatmap](assets/heatmap_risk.png)
 
-### **1. Commission × Delivery Fee → Monthly Profit (₹ Cr)**  
-Shows the profit frontier.  
-Profits rise sharply with commission and moderately with delivery fee.
+Refund probability is the dominant driver of tail risk.
+Higher commission cannot offset high refund rates.
+Loss risk rises sharply beyond ~3–4% refund probability.
 
-### **2. Commission × Refund Probability → Loss-Risk (%)**  
-Shows the risk frontier.  
-Refund probability is the **dominant driver** of tail risk.
+**Operational quality matters more than monetization for risk control.**
 
-These help identify stable, high-profit operating zones.
+---
+
+<<<<<<< HEAD
+## Project Structure
+=======
+## Strategic Recommendations
+>>>>>>> ffd03ed (Revamp README: lead with findings, add heatmaps, scenario table, recommendations)
+
+1. **Prioritise refund reduction** — lowest risk path,
+   halves loss probability with minimal volume impact.
+   Improve order accuracy, packaging standards,
+   and customer communication.
+
+2. **Focus on CAC efficiency, not absolute cuts** —
+   shift from blanket discounts to cohort-based incentives.
+   Preserves growth while capturing ₹53 Cr monthly upside.
+
+3. **Apply delivery fee increases selectively** —
+   dynamic pricing during peak demand and high congestion only.
+   Avoids broad-based churn.
+
+4. **Treat commission increases as a secondary lever** —
+   pair with restaurant value-adds (ads, analytics).
+   Avoid long-term platform disintermediation risk.
+
+5. **Improve rider cost predictability via routing optimisation** —
+   not hard cost suppression.
+   Stabilises operations without triggering supply shocks.
+
+---
+
+## Limitations
+
+* FY24 averages used — does not model cohort-level variation
+* Cost drivers modeled as independent distributions
+* Long-term churn dynamics not captured
+* City-level and time-of-day variations not modeled
+* Results indicate directional strategy impact, not exact forecasts
 
 ---
 
 ## Project Structure
 
-```
+```text
 zomato-unit-economics-simulator/
 │
 ├── notebooks/
@@ -128,7 +189,11 @@ zomato-unit-economics-simulator/
 │   └── 03_sensitivity_heatmaps.ipynb
 │
 ├── reports/
+<<<<<<< HEAD
 │   ├── Zomato_Unit_Economics_&_Risk_Simulator_(FY24.pptx
+=======
+│   ├── Zomato_Unit_Economics_&_Risk_Simulator_(FY24).pptx
+>>>>>>> ffd03ed (Revamp README: lead with findings, add heatmaps, scenario table, recommendations)
 │   └── Zomato_Unit_Economics_&_Risk_Simulator_(FY24).pdf
 │
 ├── assets/
@@ -144,28 +209,34 @@ zomato-unit-economics-simulator/
 
 ## Installation & Usage
 
-### 1. Install dependencies
-```
+```bash
 pip install -r requirements.txt
 ```
 
-### 2. Open notebooks in Google Colab or Jupyter:
-- Run baseline simulation  
-- Run scenarios  
-- Run sensitivity heatmaps  
+Open notebooks in order in Google Colab or Jupyter:
 
-Charts and results are generated automatically.
+1. `01_baseline_monte_carlo.ipynb` — baseline simulation
+2. `02_scenarios_engine.ipynb` — strategic lever testing
+3. `03_sensitivity_heatmaps.ipynb` — 2D sensitivity analysis
+
+Charts and results generate automatically.
 
 ---
 
+<<<<<<< HEAD
 ## Presentation
+=======
+## Built By
+>>>>>>> ffd03ed (Revamp README: lead with findings, add heatmaps, scenario table, recommendations)
 
-A full consulting-style PPT explaining assumptions, logic,  
-findings, heatmaps, and recommendations is available in:
+**Kushagra Bansal**
+B.Tech CSE — Shiv Nadar University (2024–28)
+
+[LinkedIn](www.linkedin.com/in/kushagra-kb1210) · [GitHub](https://github.com/Kushagra-1210)
 
 ```
-/reports/Zomato_Simulator_Presentation.pdf
 ```
+<<<<<<< HEAD
 
 ---
 
@@ -191,3 +262,5 @@ This simulator demonstrates:
 
 Useful for product roles, consulting, data science, and strategy.
 
+=======
+>>>>>>> ffd03ed (Revamp README: lead with findings, add heatmaps, scenario table, recommendations)
